@@ -1,52 +1,64 @@
-#include<iostream>
-#include<vector>
-#include<algorithm>
-using namespace std;
+#include<stdio.h>
+#include<stdlib.h>
 int main()
 {
 	int n;
-	cout<<"\t Enter the length of the request string\n";
-	cin>>n;
-	int a[n];
-	cout<<"\t Enter the request String\n";
+	printf("\t Enter the length of the request string \n");
+	scanf("%d",&n);
+	int req[n];
+	printf("\t Enter the request string \n");
 	for(int i =0;i<n;i++)
 	{
-		cin>>a[i];
+		scanf("%d",&req[i]);
 	}
 	int head;
-	cout<<"\t Enter the head/ starting point \n";
-	cin>>head;
-	vector<int>large,small;
-	for(int i =0;i<n;i++)
+	printf("\t Enter the head/ Starting point/ cylinder of the disk \n");
+	scanf("%d",&head);
+	int z = 0;
+
+	int visited[n];
+	for(int i = 0; i < n; i++){
+    	visited[i] = 0;
+	}
+
+	int v = n;
+	int min = 9999,index;
+	for(int i = 0 ;i<n;i++)
 	{
-		if(a[i]<head)
+		if(abs(req[i]-head)<min)
 		{
-			small.push_back(a[i]);
+			min = abs(req[i]-head);
+			index = i;
 		}
-		else
+	}
+	z = abs(head - req[index]);
+	visited[index] = 1;
+	v-=1;
+	while(v>0)
+	{	int index2;
+		int min = 9999;
+		for(int i =0;i<n;i++)
 		{
-			large.push_back(a[i]);
-		}
+			if(!(visited[i]))
+			{
+				
+				if(abs(req[i]-req[index])<min)
+				{
+					min = abs(req[i]-req[index]);
+					index2 = i;
+				}
+			}
+		}	
+		z+= abs(req[index] - req[index2]);
+		visited[index2] = 1;
+		index = index2;
+		v-=1;
 	}
-	
-	sort(large.begin(), large.end());
-	sort(small.begin(), small.end(), greater<int>());
+					
 
-	int move=0;
-	move = abs(head-large[0]);
-	for(int i =0;i<large.size()-1;i++)
-	{
-		move+=abs(large[i] - large[i+1]);
-	}
-	move+= abs(small[0]-large[large.size()-1]);
-	for(int i =0;i<small.size()-1;i++)
-	{
-		move+=abs(small[i] - small[i+1]);
-	}
 
-	cout<<"\t Head movements are :"<<move<<"\n";
-
+	printf("\t Total head movements are :%d \n",z);
 	return 0;
 }
 	
-	
+		
